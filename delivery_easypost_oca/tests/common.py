@@ -71,7 +71,7 @@ class EasypostTestBaseCase(TransactionCase):
             }
         )
 
-        self.default_packaging = self.env["product.packaging"].create(
+        self.default_packaging = self.env["stock.package.type"].create(
             {
                 "name": "My Easypost OCA Box",
                 "package_carrier_type": "easypost_oca",
