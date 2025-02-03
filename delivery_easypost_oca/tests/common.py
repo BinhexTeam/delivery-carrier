@@ -1,7 +1,7 @@
 from odoo.tests import Form, TransactionCase, tagged
 
 EASYPOST_TEST_KEY = "EZTK52f7d94f77344a44854f45762f3a4a11QfNflQ9TqssKdvK5fdGuUw"
-EASYPOST_PROD_KEY = "EZTK52f7d94f77344a44854f45762f3a4a11QfNflQ9TqssKdvK5fdGuUw"
+EASYPOST_PROD_KEY = "zhiDnLnzKCVkelNzVAfWEQ"
 
 
 @tagged("post_install", "-at_install")
@@ -91,10 +91,8 @@ class EasypostTestBaseCase(TransactionCase):
         sale = order_form.save()
         delivery_wizard = Form(
             self.env["choose.delivery.carrier"].with_context(
-                {
-                    "default_order_id": sale.id,
-                    "default_carrier_id": self.carrier.id,
-                }
+                default_order_id=sale.id,
+                default_carrier_id=self.carrier.id,
             )
         ).save()
         delivery_wizard.button_confirm()
@@ -110,7 +108,7 @@ class EasypostTestBaseCase(TransactionCase):
         )
         wiz = (
             self.env[wiz_action["res_model"]]
-            .with_context(wiz_action["context"])
+            .with_context(**wiz_action["context"])
             .create({"delivery_packaging_id": self.default_packaging.id})
         )
         wiz.action_put_in_pack()

@@ -1,5 +1,4 @@
 # generated from manifests external_dependencies
-easypost
 easypost==7.15.0
 roulier
 unidecode
