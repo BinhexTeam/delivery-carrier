@@ -43,7 +43,7 @@ class EasyPostShipment:
             response.raise_for_status()  # Raise exception for HTTP errors
         except requests.RequestException as e:
             _logger.error(_("Failed to retrieve label content: %s"), e)
-            raise UserError(_("Failed to retrieve label content."))
+            raise UserError(_("Failed to retrieve label content.")) from e
         return response.content
 
 
