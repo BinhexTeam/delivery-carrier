@@ -58,12 +58,14 @@ class TestDeliveryEasypost(EasypostTestBaseCase):
         Picking.action_assign()
 
         # First move line
-        Picking.move_lines[0].write({"quantity_done": 5})
+        Picking.move_ids[0].write({"quantity_done": 5})
         self._put_in_pack(Picking)
-        Picking.move_lines[
-            0
-        ].move_line_ids.result_package_id.packaging_id = self.default_packaging.id
-        Picking.move_lines[0].move_line_ids.result_package_id.shipping_weight = 10.0
+        Picking.move_ids[0].move_line_ids.result_package_id.package_type_id = (
+            self.default_packaging.id
+        )
+        Picking.move_ids[0].move_line_ids.result_package_id.shipping_weight = (
+            10.0
+        )
 
         self.assertGreater(
             Picking.weight,
