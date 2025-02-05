@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from markupsafe import Markup
+
 from odoo import _, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_round
@@ -207,7 +209,7 @@ class DeliveryCarrier(models.Model):
                 weight = sum(
                     ml.product_id.weight
                     * ml.product_uom_id._compute_quantity(
-                        ml.product_qty,
+                        ml.quantity_product_uom,
                         ml.product_id.uom_id,
                         rounding_method="HALF-UP",
                     )
@@ -217,7 +219,7 @@ class DeliveryCarrier(models.Model):
                 weight = sum(
                     ml.product_id.weight
                     * ml.product_uom_id._compute_quantity(
-                        ml.qty_done,
+                        ml.quantity,
                         ml.product_id.uom_id,
                         rounding_method="HALF-UP",
                     )
@@ -247,7 +249,7 @@ class DeliveryCarrier(models.Model):
             for package in picking.package_ids:
                 # compute move line weight in package
                 move_lines = picking.move_line_ids.filtered(
-                    lambda ml: ml.result_package_id == package
+                    lambda ml, pkg=package: ml.result_package_id == pkg
                 )
                 if picking.picking_type_code == "incoming":
                     weight = sum(
@@ -369,22 +371,27 @@ class DeliveryCarrier(models.Model):
             )
             carrier_tracking_links.append(
                 (
-                    f"<a target='_blank' href='{public_url}'> {tracking_code}</a>",
+                    Markup("<a target='_blank' href='%(url)s'> %(code)s</a>")
+                    % {
+                        "url": public_url,
+                        "code": tracking_code,
+                    },
                     shipment.carrier_name,
                     shipment.carrier_service,
                 )
             )
             files_to_merge.append(shipment.get_label_content())
 
-        logmessage = _(
+        logmessage = Markup(
             "Shipment created into Easypost<br/>"
             "<b>Tracking Numbers:</b> %(tracking)s<br/>"
             "<b>Carrier Account:</b> %(carrier)s<br/>"
-            "<b>Carrier Service:</b> %(service)s<br/>",
-            tracking=", ".join([link[0] for link in carrier_tracking_links]),
-            carrier=", ".join({link[1] for link in carrier_tracking_links}),
-            service=", ".join({link[2] for link in carrier_tracking_links}),
-        )
+            "<b>Carrier Service:</b> %(service)s<br/>"
+        ) % {
+            "tracking": ", ".join([link[0] for link in carrier_tracking_links]),
+            "carrier": ", ".join({link[1] for link in carrier_tracking_links}),
+            "service": ", ".join({link[2] for link in carrier_tracking_links}),
+        }
 
         file_merged = self._contact_files(
             self.easypost_oca_label_file_type, files_to_merge

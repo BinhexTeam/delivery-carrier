@@ -10,25 +10,19 @@
           <xpath expr="//field[@name='height']" position='replace'>
             <div class="o_row">
               <field name="height" nolabel="1" />
-              <span
-                        attrs="{'invisible': [('package_carrier_type', '!=', 'easypost_oca')]}"
-                    >Inches</span>
+              <span invisible="package_carrier_type != 'easypost_oca'">Inches</span>
             </div>
           </xpath>
           <xpath expr="//field[@name='width']" position='replace'>
             <div class="o_row">
               <field name="width" nolabel="1" />
-              <span
-                        attrs="{'invisible': [('package_carrier_type', '!=', 'easypost_oca')]}"
-                    >Inches</span>
+              <span invisible="package_carrier_type != 'easypost_oca'">Inches</span>
             </div>
           </xpath>
           <xpath expr="//field[@name='packaging_length']" position='replace'>
             <div class="o_row">
               <field name="packaging_length" nolabel="1" />
-              <span
-                        attrs="{'invisible': [('package_carrier_type', '!=', 'easypost_oca')]}"
-                    >Inches</span>
+              <span invisible="package_carrier_type != 'easypost_oca'">Inches</span>
             </div>
           </xpath>
         </field>

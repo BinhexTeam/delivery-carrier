@@ -11,20 +11,20 @@
                 <page
                     string="Easypost Configuration"
                     name="easypost_configuration"
-                    attrs="{'invisible': [('delivery_type', '!=', 'easypost_oca')]}"
+                    invisible="delivery_type != 'easypost_oca'"
                 >
                     <group>
                         <group>
                             <field
                                 name="easypost_oca_test_api_key"
-                                attrs="{'required':[('delivery_type', '=', 'easypost_oca')]}"
+                                required="delivery_type == 'easypost_oca'"
                             />
                             <field name="easypost_oca_label_file_type" />
                         </group>
                         <group>
                             <field
                                 name="easypost_oca_production_api_key"
-                                attrs="{'required':[('delivery_type', '=', 'easypost_oca')]}"
+                                required="delivery_type == 'easypost_oca'"
                             />
                             <field name="is_saturday_delivery" />
                         </group>
