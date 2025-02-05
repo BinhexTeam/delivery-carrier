@@ -106,9 +106,10 @@ class EasypostTestBaseCase(TransactionCase):
             "choose.delivery.package",
             "Wrong wizard returned",
         )
-        wiz = (
+        wiz = Form(
             self.env[wiz_action["res_model"]]
             .with_context(**wiz_action["context"])
-            .create({"delivery_packaging_id": self.default_packaging.id})
+            .create({"delivery_package_type_id": self.default_packaging.id})
         )
-        wiz.action_put_in_pack()
+        choose_delivery_carrier = wiz.save()
+        choose_delivery_carrier.action_put_in_pack()
