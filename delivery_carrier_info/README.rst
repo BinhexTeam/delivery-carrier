@@ -29,6 +29,7 @@ Delivery Carrier Info
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
 This module add the field "code" and "description" on the delivery carrier.
+cosas extra
 
 **Table of contents**
 
